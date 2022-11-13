@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id(map: "user_pk") @unique(map: "user_id_uindex") @default(autoincrement())
+  name       String    @unique(map: "user_name_uindex") @db.VarChar(100)
+  university String    @db.VarChar(50)
+  Lending    Lending[]
+}
+
+model Book {
+  name        String    @unique(map: "book_name_uindex") @db.VarChar(100)
+  author      String    @db.VarChar(50)
+  image       String    @db.VarChar(255)
+  publisher   String    @db.VarChar(50)
+  description String    @db.VarChar(1000)
+  pub_date    String    @db.VarChar(50)
+  category    String    @db.VarChar(50)
+  id          Int       @id(map: "book_pk") @unique(map: "book_id_uindex") @default(autoincrement())
+  Lending     Lending[]
+}
+
+model Lending {
+  user_id      Int
+  book_id      Int
+  lending_date String @db.VarChar(50)
+  return_date  String @db.VarChar(50)
+  id           Int    @id(map: "lending_pk") @unique(map: "lending_id_uindex") @default(autoincrement())
+  Book         Book   @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lending_book_id_fk")
+  User         User   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lending_user_id_fk")
+}
