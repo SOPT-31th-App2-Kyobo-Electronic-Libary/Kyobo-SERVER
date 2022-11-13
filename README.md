@@ -389,7 +389,7 @@ ex) `postUserInformation( )`
 <aside>
 👻 git commit message convention
 
-`ex) [FEAT]/#`issue num` User API 파일 추가` 
+`ex) Feat/#`issue num` User API 파일 추가` 
 
 ```ruby
 - Chore : 코드 수정, 내부 파일 수정
