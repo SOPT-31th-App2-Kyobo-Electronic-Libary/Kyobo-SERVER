@@ -1,5 +1,9 @@
-import { Router } from 'express' ;
 
-const bookRouter :Router = Router();
+import { Router } from "express";
+import bookController from "../controller/bookController";
 
-export default bookRouter;
+const router: Router = Router();
+
+router.get("/:bookId", bookController.getBookById);
+
+export default router;
