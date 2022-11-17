@@ -29,8 +29,20 @@ const getBookById = async (req: Request, res: Response) => {
       );
   }
 };
+
+
+const createBookLending = async (req : Request, res : Response)=>{
+  const { bookId } = req.params;
+  const { userId }=req.body;
+
+  const createdBookLending = await bookService.createBookLending(Number(userId), Number(bookId));
+
+}
+
+
 const bookController = {
   getBookById,
+  createBookLending
 };
 
 export default bookController;

@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { bookResponseDto } from "../interface/book/bookResponseDto";
+import { util } from "../module/util";
+
 const prisma = new PrismaClient();
 
 
@@ -33,8 +35,25 @@ const getBookById = async(bookId: Number): Promise<bookResponseDto|null> => {
     }
 }
 
+const createBookLending = async ( userId : number, bookId : number) : Promise<util> => {
+    //promise 자체에서 .catche로 잡을 수도 있지만 아예 겉을 try-catch 문으로 에러처리가능
+    const data = await prisma.lending.create({
+        data : {
+            user_id : userId,
+            book_id : bookId,
+        },
+    })
+    .catch(e){
+        console.log(e);
+        throw e;
+    }
+
+}
+
+
 const bookService = {
-    getBookById
+    getBookById,
+    createBookLending
 }
 
 export default bookService;
