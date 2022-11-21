@@ -1,7 +1,7 @@
 import { convertDateForm } from './../module/convertDateForm';
 import { PrismaClient } from "@prisma/client";
 import { bookResponseDto } from "../interface/book/bookResponseDto";
-import util from "../module/util";
+import { util } from "../module/util";
 
 import { convertDateForm } from "../module/convertDateForm";
 const prisma = new PrismaClient();
@@ -49,7 +49,7 @@ const createBookLending = async ( userId : number, bookId : number, returnDate :
 
     const leadingData : string = convertDateForm(now); //빌린날짜 : 현재 날짜
     
-    now.setDate(now.getDate+enVariable.LENDINGPERIOD); 
+    now.setDate(now.getDate()+enVariable.LENDINGPERIOD); 
 
     const returnData : string = convertDateForm(now); //반환날짜 : 현재 날짜 + 대출기간
 
