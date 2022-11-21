@@ -23,6 +23,9 @@ const getUserLending = async (userId: number): Promise<string|userLendingRespons
           }
        }
       },
+      orderBy: {
+        lending_date: 'desc'
+      }
     });
   
     const lendingBooks: lendingBook[] = [];
