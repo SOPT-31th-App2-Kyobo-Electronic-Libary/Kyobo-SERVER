@@ -1,3 +1,4 @@
+import { convertDateForm } from './../module/convertDateForm';
 import { PrismaClient } from "@prisma/client";
 import { bookResponseDto } from "../interface/book/bookResponseDto";
 import util from "../module/util";
@@ -42,18 +43,36 @@ const getBookById = async(bookId: number): Promise<bookResponseDto|null> => {
     }
 }
 
-const createBookLending = async ( userId : number, bookId : number) : Promise<util> => {
+const createBookLending = async ( userId : number, bookId : number, returnDate : String) : Promise<util> => {
     //promise 자체에서 .catche로 잡을 수도 있지만 아예 겉을 try-catch 문으로 에러처리가능
-    const data = await prisma.lending.create({
-        data : {
-            user_id : userId,
-            book_id : bookId,
-        },
-    })
-    .catch(e){
-        console.log(e);
-        throw e;
+    const now : Date = new Date();
+
+    const leadingData : string = convertDateForm(now); //빌린날짜 : 현재 날짜
+    
+    now.setDate(now.getDate+enVariable.LENDINGPERIOD); 
+
+    const returnData : string = convertDateForm(now); //반환날짜 : 현재 날짜 + 대출기간
+
+    try{
+        const lending = await prisma.lending.create({
+            data : {
+                user_id : userId,
+                book_id : bookId,
+                lending_date : leadingData,
+                return_date : returnData
+            },
+        });
+        if(!lending) return null
+        return 
+
+
     }
+    catch(error){
+        console.log(error);
+        throw error;
+    }
+
+    
 
 }
 
