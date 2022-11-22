@@ -7,6 +7,12 @@ const message = {
     // 도서 관련
     GET_BOOK_SUCCESS: '도서 조회 성공',
     NOT_FOUND_BOOK: '해당 책이 존재하지 않습니다',
+
+    // 유저 관련
+    NO_USER: '해당 유저가 존재하지 않습니다',
+
+    // 대출 관련
+    GET_LENDING_SUCCESS: '대출 조회 성공'
 }
 
 export default message;
