@@ -23,8 +23,23 @@ const getUserLending = async(req: Request,res: Response) => {
     }
 }
 
+const getMainPageData = async(req : Request, res : Response)=>{
+  const { userId } = req.params;
+  try{
+    const lendingBook
+
+  }
+  catch(error){
+    console.log(error);
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR,message.INTERNAL_SERVER_ERROR));
+    
+  }
+
+}
+
 const userController = {
-  getUserLending
+  getUserLending,
+  getMainPageData
 };
 
 export default userController;
