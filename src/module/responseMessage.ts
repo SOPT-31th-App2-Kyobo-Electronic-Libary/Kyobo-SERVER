@@ -14,7 +14,10 @@ const message = {
     NO_USER: '해당 유저가 존재하지 않습니다',
 
     // 대출 관련
-    GET_LENDING_SUCCESS: '대출 조회 성공'
+    GET_LENDING_SUCCESS: '대출 조회 성공',
+
+    //메인페이지 관련
+    GET_MAIN_PAGE_DATA_SUCCESS : '메인페이지 데이터 조회 성공'
 }
 
 export default message;
