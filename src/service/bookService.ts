@@ -1,12 +1,12 @@
-import { convertDateForm } from './../module/convertDateForm';
 import { PrismaClient } from "@prisma/client";
 import { bookResponseDto } from "../interface/book/bookResponseDto";
-import { util } from "../module/util";
+import { LENDINGPERIOD, LENDINGLIMITFORONEBOOK } from "../module/enVariable";
 import { convertDateForm } from "../module/convertDateForm";
-import { enVariable } from "../module/enVariable";
-import { hasUncaughtExceptionCaptureCallback } from 'process';
+import util from "../module/util";
+import statusCode from "../module/statusCode";
+import message from '../module/responseMessage';
 
-import { convertDateForm } from "../module/convertDateForm";
+
 const prisma = new PrismaClient();
 
 
@@ -46,31 +46,42 @@ const getBookById = async(bookId: number): Promise<bookResponseDto|null> => {
     }
 }
 
-const createBookLending = async ( userId : number, bookId : number, returnDate : String) : Promise<util> => {
+const createBookLending = async ( userId : number, bookId : number, returnDate : string) => {
     //promise 자체에서 .catche로 잡을 수도 있지만 아예 겉을 try-catch 문으로 에러처리가능
     const now : Date = new Date();
-
-    const leadingData : string = convertDateForm(now); //빌린날짜 : 현재 날짜
-    
-    now.setDate(now.getDate()+enVariable.LENDINGPERIOD); 
-
-    const returnData : string = convertDateForm(now); //반환날짜 : 현재 날짜 + 대출기간
+    const leadingDate : string = convertDateForm(now); //빌린날짜 : 현재 날짜
 
     try{
-        const lending = await prisma.lending.create({
-            data : {
-                user_id : userId,
-                book_id : bookId,
-                lending_date : leadingData,
-                return_date : returnData
-            },
+        const nowLendingCount = await prisma.lending.findMany({
+            where:{
+                book_id : bookId
+            } 
         });
-        if(!lending) return null
-        return 
+
+        if( nowLendingCount.length<LENDINGLIMITFORONEBOOK ){
+            const lending = await prisma.lending.create({
+                data : {
+                    user_id : userId,
+                    book_id : bookId,
+                    lending_date : leadingDate,
+                    return_date : returnDate
+                },
+            });
+
+            if(!lending){
+                return util.fail(statusCode.BAD_REQUEST,message.NOT_FOUND_BOOK);
+            }
+
+            return util.success(statusCode.CREATED,message.LENDING_BOOK_SUCCESS,lending);
 
 
-    }
-    catch(error){
+        }
+        else{
+            return util.fail(statusCode.BAD_REQUEST,message.ALREADY_LENDING_BOOK)
+            
+        }
+
+    }catch(error){
         console.log(error);
         throw error;
     }

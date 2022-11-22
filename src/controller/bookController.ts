@@ -33,14 +33,25 @@ const getBookById = async (req: Request, res: Response) => {
 
 const createBookLending = async (req : Request, res : Response)=>{
   const { bookId } = req.params;
-  const { userId }=req.body;
+  const { userId, returnDate }=req.body;
 
-  //일단 유저와 책은 무조건 존재할 수 밖에 없음
-  const createdBookLending = await bookService.createBookLending(Number(userId), Number(bookId));
-
-  if(createdBookLending.fail){
-    //도서가 이미 대출중인 경우
+  if(!bookId || !userId || !returnDate){
+    return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,message.NULL_VALUE));
   }
+
+  try{
+      //일단 유저와 책은 무조건 존재할 수 밖에 없음
+    const createdBookLending = await bookService.createBookLending(Number(userId), Number(bookId),returnDate);
+
+    return res.status(createdBookLending.status).send(createdBookLending);
+    
+  }
+  catch(error){
+    console.log(error);
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).send(util.fail(statusCode.INTERNAL_SERVER_ERROR,message.INTERNAL_SERVER_ERROR))
+    
+  }
+  
 }
 
 

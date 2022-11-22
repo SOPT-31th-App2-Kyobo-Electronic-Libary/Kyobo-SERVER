@@ -1,6 +1,4 @@
 
-const enVariable={
-    LENDINGLIMITFORONEBOOK : 2,
-    LENDINGPERIOD : 14,
+export const LENDINGLIMITFORONEBOOK = 2
 
-}
+export const LENDINGPERIOD=14
