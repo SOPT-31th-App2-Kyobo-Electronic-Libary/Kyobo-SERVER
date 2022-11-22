@@ -68,16 +68,13 @@ const createBookLending = async ( userId : number, bookId : number, returnDate :
                 },
             });
 
-            if(!lending){
-                return util.fail(statusCode.BAD_REQUEST,message.NOT_FOUND_BOOK);
-            }
-
-            return util.success(statusCode.CREATED,message.LENDING_BOOK_SUCCESS,lending);
+            return lending;
 
 
         }
         else{
-            return util.fail(statusCode.BAD_REQUEST,message.ALREADY_LENDING_BOOK)
+            return null;
+         
             
         }
 

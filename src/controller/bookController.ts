@@ -43,8 +43,12 @@ const createBookLending = async (req : Request, res : Response)=>{
       //일단 유저와 책은 무조건 존재할 수 밖에 없음
     const createdBookLending = await bookService.createBookLending(Number(userId), Number(bookId),returnDate);
 
-    return res.status(createdBookLending.status).send(createdBookLending);
-    
+    if(!createdBookLending){
+      return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,message.ALREADY_LENDING_BOOK));
+
+    }
+    return res.status(statusCode.OK).send(util.success(statusCode.CREATED,message.LENDING_BOOK_SUCCESS,createdBookLending));
+
   }
   catch(error){
     console.log(error);
