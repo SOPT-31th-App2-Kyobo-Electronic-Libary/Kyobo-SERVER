@@ -1,17 +1,13 @@
+import { lendingBook } from "./userLendingResponseDto";
+
 
 export interface userMainPageResponseDto{
-    lendingBook : MainPagelendingBook[],
+    lendingBook : lendingBook[],
     bestBook : bestBook[],
     newBook: newBook[],
     categoryBook : categoryBook[]
 }
 
-export interface MainPagelendingBook{
-    id: number,
-    name: string,
-    image: string,
-    dDay: number
-}
 
 export interface bestBook{
     id: number,
