@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { bookResponseDto } from "../interface/book/bookResponseDto";
-import { LENDINGPERIOD, LENDINGLIMITFORONEBOOK } from "../module/enVariable";
+import { LENDING_PERIOD, LENDING_LIMIT_FOR_A_BOOK } from "../module/enVariable";
 import { convertDateForm } from "../module/convertDateForm";
 import util from "../module/util";
 import statusCode from "../module/statusCode";
@@ -22,7 +22,7 @@ const getBookById = async(bookId: number): Promise<bookResponseDto|null> => {
         
         const pubDate = new Date(book.pub_date)
         const now = new Date();
-        const returnDate = new Date(now.setDate(now.getDate() + 14));
+        const returnDate = new Date(now.setDate(now.getDate() + LENDING_PERIOD));
     
         const bookInfo = {
             id: book.id,
@@ -58,7 +58,7 @@ const createBookLending = async ( userId : number, bookId : number, returnDate :
             } 
         });
 
-        if( nowLendingCount.length<LENDINGLIMITFORONEBOOK ){
+        if( nowLendingCount.length < LENDING_LIMIT_FOR_A_BOOK ){
             const lending = await prisma.lending.create({
                 data : {
                     user_id : userId,
